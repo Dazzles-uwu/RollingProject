@@ -1,14 +1,14 @@
 
 public class Enrolment {
 
-    public static void main(String[] args) {
+/*    public static void main(String[] args) {
         Student studentObj = new Student("Daffa", "395 Bourke Street",
                 "0439 284 141", "daffa@email.com");
         Unit unitObj = new Unit("FIT2096", "Game Development 1", 6);
 
         Enrolment enrolmentObj = new Enrolment("11/07/23", studentObj, unitObj);
         System.out.println(enrolmentObj.display());
-    }
+    }*/
 
     private String date;
     private Student student;
@@ -17,6 +17,13 @@ public class Enrolment {
     public Enrolment()
     {
         this.date = "11/07/2023";
+        this.student = new Student();
+        this.unit = new Unit();
+    }
+
+    public Enrolment(String date)
+    {
+        this.date = date;
         this.student = new Student();
         this.unit = new Unit();
     }
