@@ -1,34 +1,27 @@
 
 public class Enrolment {
 
-/*    public static void main(String[] args) {
-        Student studentObj = new Student("Daffa", "395 Bourke Street",
-                "0439 284 141", "daffa@email.com");
-        Unit unitObj = new Unit("FIT2096", "Game Development 1", 6);
-
-        Enrolment enrolmentObj = new Enrolment("11/07/23", studentObj, unitObj);
-        System.out.println(enrolmentObj.display());
-    }*/
-
     private String date;
     private Student student;
-    private Unit unit;
+    private Unit[] unit;
 
     public Enrolment()
     {
         this.date = "11/07/2023";
         this.student = new Student();
-        this.unit = new Unit();
+        this.unit = new Unit[1];
+        this.unit[0] = new Unit();
     }
 
-    public Enrolment(String date)
-    {
-        this.date = date;
-        this.student = new Student();
-        this.unit = new Unit();
-    }
+//    public Enrolment(String date)
+//    {
+//        this.date = date;
+//        this.student = new Student();
+//        this.unit = new Unit[1];
+//        this.unit[0] = new Unit();
+//    }
 
-    public Enrolment(String date, Student student, Unit unit) {
+    public Enrolment(String date, Student student, Unit[] unit) {
         this.date = date;
         this.student = student;
         this.unit = unit;
@@ -36,11 +29,19 @@ public class Enrolment {
 
     public String display()
     {
-        return "Date: " + date + "\n" +
+        String unitDisplay = "";
+
+        if (unit != null) {
+            for (Unit unitObj : unit) {
+                unitDisplay += unitObj.display();
+            }
+        }
+
+        return "\nDate: " + date + "\n" +
                 "~Student Information~" + "\n" +
-                this.student.display() + "\n" +
+                this.student.display() + "\n\n" +
                 "~Unit Information~" + "\n" +
-                this.unit.display();
+                unitDisplay + "\n\n";
     }
 
     public String getDate() {
@@ -51,10 +52,6 @@ public class Enrolment {
         return student;
     }
 
-    public Unit getUnit() {
-        return unit;
-    }
-
     public void setDate(String date) {
         this.date = date;
     }
@@ -63,7 +60,36 @@ public class Enrolment {
         this.student = student;
     }
 
-    public void setUnit(Unit unit) {
+    public Unit[] getUnit()
+    {
+        return unit;
+    }
+
+    public void setUnit(Unit[] unit)
+    {
         this.unit = unit;
+    }
+
+    public int getUnitSize()
+    {
+        return this.unit.length;
+    }
+
+    public void setUnitSize(int unitSize)
+    {
+        this.unit = new Unit[unitSize];
+    }
+
+    public Unit getSpecificUnit(int specificUnit)
+    {
+        return this.unit[specificUnit];
+    }
+
+    public void setSpecificUnit(int index, String unitCode, String unitDescription, int creditPoints)
+    {
+        this.unit[index] = new Unit();
+        this.unit[index].setUnitCode(unitCode);
+        this.unit[index].setUnitDescription(unitDescription);
+        this.unit[index].setCreditPoints(creditPoints);
     }
 }

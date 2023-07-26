@@ -22,7 +22,7 @@ public class Unit {
     {
         return "Unit Code: " + unitCode + "\n" +
                 "Unit Description: " + unitDescription + "\n" +
-                "Credit Points: " + creditPoints;
+                "Credit Points: " + creditPoints + "\n\n";
     }
     public int getCreditPoints() {
         return creditPoints;
