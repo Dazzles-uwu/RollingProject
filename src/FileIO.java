@@ -29,13 +29,14 @@ public class FileIO {
         String fileContent = "";
         try
         {
-            FileReader reader = new FileReader("students.txt");
+            FileReader reader = new FileReader(University.FILE_NAME);
 
             Scanner fileInput = new Scanner(reader);
             while (fileInput.hasNextLine())
             {
                 fileContent += fileInput.nextLine() + "\n";
             }
+            reader.close();
         }
         catch (Exception e)
         {
@@ -49,8 +50,8 @@ public class FileIO {
         try
         {
             FileWriter writer = new FileWriter(University.FILE_NAME);
-            line += "\n";
-            writer.append(line);
+            writer.write(line);
+            writer.close();
         }
         catch (Exception e)
         {

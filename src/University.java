@@ -3,7 +3,7 @@ import java.util.ArrayList;
 public class University {
 
     private ArrayList<Enrolment> enrolments;
-    public static final String FILE_NAME = "students.txt";
+    public static final String FILE_NAME = "src/students.txt";
 
     public void startProgram()
     {
@@ -31,13 +31,13 @@ public class University {
                 Enrolment currentEnrolmentObj = new Enrolment(dateOfEnrolment, new Student(), new Unit[4]);
                 inputStudentDetails(currentEnrolmentObj);
 
-                String numberOfUnits = input.acceptStringInput("What is the amount of units you would like to enrol in?");
-                while (validation.isBlank(numberOfUnits) && Integer.parseInt(numberOfUnits) <= 0)
+                int numberOfUnits = input.acceptIntegerInput("What is the amount of units you would like to enrol in?");
+                while (numberOfUnits <= 0)
                 {
                     System.out.println("Value cannot be blank or the number must be greater than 0");
-                    numberOfUnits = input.acceptStringInput("What is the amount of units you would like to enrol in?");
+                    numberOfUnits = input.acceptIntegerInput("What is the amount of units you would like to enrol in?");
                 }
-                currentEnrolmentObj.setUnitSize(Integer.parseInt(numberOfUnits));
+                currentEnrolmentObj.setUnitSize(numberOfUnits);
                 inputUnitDetails(currentEnrolmentObj);
 
                 enrolments.add(currentEnrolmentObj);
@@ -242,8 +242,8 @@ public class University {
                 }
             }
 
-            enrolmentContent += unitContent;
-            fileIOObj.writeFile(enrolmentContent);
+            enrolmentContent += unitContent + "\n";
         }
+        fileIOObj.writeFile(enrolmentContent);
     }
 }
