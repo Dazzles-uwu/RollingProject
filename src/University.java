@@ -3,12 +3,13 @@ import java.util.ArrayList;
 public class University {
 
     private ArrayList<Enrolment> enrolments;
+    public static final String FILE_NAME = "students.txt";
 
     public void startProgram()
     {
         Input input = new Input();
         Validation validation = new Validation();
-        this.enrolments = new ArrayList<Enrolment>();
+        readFile();
 
         String mainMenu = "~Main Menu~" + "\n" +
                 "1) Enrol a Student" + "\n" +
@@ -27,20 +28,22 @@ public class University {
                     dateOfEnrolment = input.acceptStringInput("What is the Enrolment Date?: ");
                 }
 
+                Enrolment currentEnrolmentObj = new Enrolment(dateOfEnrolment, new Student(), new Unit[4]);
+                inputStudentDetails(currentEnrolmentObj);
+
                 String numberOfUnits = input.acceptStringInput("What is the amount of units you would like to enrol in?");
                 while (validation.isBlank(numberOfUnits) && Integer.parseInt(numberOfUnits) <= 0)
                 {
                     System.out.println("Value cannot be blank or the number must be greater than 0");
                     numberOfUnits = input.acceptStringInput("What is the amount of units you would like to enrol in?");
                 }
-
-                Enrolment currentEnrolmentObj = new Enrolment(dateOfEnrolment, new Student(), new Unit[Integer.parseInt(numberOfUnits)]);
-                inputStudentDetails(currentEnrolmentObj);
+                currentEnrolmentObj.setUnitSize(Integer.parseInt(numberOfUnits));
                 inputUnitDetails(currentEnrolmentObj);
 
                 enrolments.add(currentEnrolmentObj);
                 display();
             } else if (userChoice == 2) {
+                writeFile();
                 exit = true;
             } else {
                 System.out.println("Please give a valid number");
@@ -181,5 +184,66 @@ public class University {
     public void setSpecificEnrolment(int index, Enrolment enrolment)
     {
         this.enrolments.set(index, enrolment);
+    }
+
+    public void readFile()
+    {
+        FileIO fileIOObj = new FileIO();
+        String fileContent = "";
+        fileContent = fileIOObj.readFile();
+        System.out.println(fileContent);
+
+        String[] individualStudent = fileContent.split("\n");
+
+        for (int i = 0; i < individualStudent.length; i++)
+        {
+            String[] enrolmentInfo = individualStudent[i].split(",");
+            String[] unitInfo = enrolmentInfo[enrolmentInfo.length - 1].split(";");
+
+            String date = enrolmentInfo[0];
+            String name = enrolmentInfo[1];
+            String address = enrolmentInfo[2];
+            String phoneNo = enrolmentInfo[3];
+            String email = enrolmentInfo[4];
+
+            Unit[] unit = new Unit[unitInfo.length];
+
+            for (int j = 0; j < unitInfo.length; j++)
+            {
+                String[] unitIndividualInfo = unitInfo[j].split("-");
+                unit[j] = new Unit(unitIndividualInfo[0], unitIndividualInfo[1], Integer.parseInt(unitIndividualInfo[2]));
+            }
+
+            this.enrolments.add(new Enrolment(date, new Student(name, address, phoneNo, email), unit));
+        }
+    }
+
+    public void writeFile()
+    {
+        FileIO fileIOObj = new FileIO();
+        String enrolmentContent = "";
+        for (Enrolment enrolment : this.enrolments) {
+            enrolmentContent += enrolment.getDate() + ",";
+            enrolmentContent += enrolment.getStudent().getName() + ",";
+            enrolmentContent += enrolment.getStudent().getAddress() + ",";
+            enrolmentContent += enrolment.getStudent().getPhoneNo() + ",";
+            enrolmentContent += enrolment.getStudent().getEmail() + ",";
+
+            String unitContent = "";
+            for (int j = 0; j < enrolment.getUnitSize(); j++) {
+                if (j != enrolment.getUnitSize() - 1) {
+                    unitContent += enrolment.getSpecificUnit(j).getUnitCode() + "-" +
+                            enrolment.getSpecificUnit(j).getUnitDescription() + "-" +
+                            enrolment.getSpecificUnit(j).getCreditPoints() + ";";
+                } else {
+                    unitContent += enrolment.getSpecificUnit(j).getUnitCode() + "-" +
+                            enrolment.getSpecificUnit(j).getUnitDescription() + "-" +
+                            enrolment.getSpecificUnit(j).getCreditPoints();
+                }
+            }
+
+            enrolmentContent += unitContent;
+            fileIOObj.writeFile(enrolmentContent);
+        }
     }
 }

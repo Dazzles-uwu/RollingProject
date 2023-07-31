@@ -24,10 +24,23 @@ public class Input {
 
     public int acceptIntegerInput(String message)
     {
+        int integerInput = 0;
         Scanner keyboard = new Scanner(System.in);
-
-        System.out.println(message);
-        return Integer.parseInt(keyboard.nextLine());
+        boolean validInput = false;
+        while (!validInput)
+        {
+            try
+            {
+                System.out.println(message);
+                integerInput = Integer.parseInt(keyboard.nextLine());
+                validInput = true;
+            }
+            catch (Exception e)
+            {
+                System.out.println("Invalid" + e);
+            }
+        }
+        return integerInput;
     }
 
     public String acceptStringInput(String message)
